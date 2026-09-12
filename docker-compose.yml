@@ -1,0 +1,36 @@
+services:
+  inmo-back:
+    build: .
+    container_name: inmobiliaria-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/home/app
+      - /home/app/node_modules
+    depends_on:
+      inmo-db:
+        condition: service_healthy
+    env_file:
+      - .env
+
+  inmo-db:
+    image: mysql:8.0
+    container_name: inmobiliaria-database
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_NAME}
+    ports:
+      - "3307:3306"
+    volumes:
+      - inmo-db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 180s
+
+volumes:
+  inmo-db-data:

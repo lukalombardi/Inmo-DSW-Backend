@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Operacion {
+  VENTA
+  ALQUILER
+}
+
+enum Moneda {
+  ARS
+  USD
+}
+
+enum Rol {
+  ADMIN
+  OPERADOR
+}
+
+model Zona {
+  id          Int         @id @default(autoincrement())
+  nombreZona  String
+  propiedades Propiedad[]
+
+  @@map("zonas")
+}
+
+model Tipo {
+  id          Int         @id @default(autoincrement())
+  descTipo    String
+  propiedades Propiedad[]
+
+  @@map("tipos")
+}
+
+model Usuario {
+  id          Int         @id @default(autoincrement())
+  nombre      String
+  email       String      @unique
+  password    String
+  rol         Rol         @default(OPERADOR)
+  propiedades Propiedad[]
+
+  @@map("usuarios")
+}
+
+model Propiedad {
+  id               Int       @id @default(autoincrement())
+  cantHabitaciones Int
+  metrosCuadrados  Decimal   @db.Decimal(10, 2)
+  cochera          Boolean
+  aptoCredito      Boolean
+  descripcion      String    @db.Text
+  operacion        Operacion
+  direccion        String
+  latitud          Decimal   @db.Decimal(10, 7)
+  longitud         Decimal   @db.Decimal(10, 7)
+  moneda           Moneda
+  precio           Decimal   @db.Decimal(12, 2)
+
+  tipoId    Int
+  tipo      Tipo    @relation(fields: [tipoId], references: [id])
+  zonaId    Int
+  zona      Zona    @relation(fields: [zonaId], references: [id])
+  usuarioId Int
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+
+  fotos     Foto[]
+  consultas Consulta[]
+
+
+  @@map("propiedades")
+}
+
+model Foto {
+  id          Int       @id @default(autoincrement())
+  url         String
+  propiedadId Int
+  propiedad   Propiedad @relation(fields: [propiedadId], references: [id], onDelete: Cascade)
+
+  @@map("fotos")
+}
+
+model Consulta {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  email       String
+  mensaje     String    @db.Text
+  fecha       DateTime  @default(now())
+  propiedadId Int
+  propiedad   Propiedad @relation(fields: [propiedadId], references: [id], onDelete: Cascade)
+
+  @@map("consultas")
+}
