@@ -12,7 +12,7 @@ const getZonas = async (req, res) => {
 const getZona = async (req, res) => {
   try {
     const zona = await prisma.zona.findUnique({
-      where: { id: parseInt(req.params.id) }
+      where: { id: req.params.id }
     });
     if (!zona) {
       return res.status(404).json({ error: 'Zona no encontrada' });
@@ -37,7 +37,7 @@ const createZona = async (req, res) => {
 const updateZona = async (req, res) => {
   try {
     const zonaActualizada = await prisma.zona.update({
-      where: { id: parseInt(req.params.id) },
+      where: { id: req.params.id },
       data: { nombreZona: req.body.nombreZona }
     });
     res.json(zonaActualizada);
@@ -52,7 +52,7 @@ const updateZona = async (req, res) => {
 const deleteZona = async (req, res) => {
   try {
     const zonaEliminada = await prisma.zona.delete({
-      where: { id: parseInt(req.params.id) }
+      where: { id: req.params.id }
     });
     res.json(zonaEliminada);
   } catch (error) {
