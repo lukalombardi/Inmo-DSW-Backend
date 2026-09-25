@@ -1,3 +1,4 @@
+const { z } = require('zod');
 const zonaSchema = z.object({
   nombreZona: z
     .string({ message: 'El nombre debe ser un texto' })
@@ -11,3 +12,5 @@ const zonaUpdateSchema = zonaSchema
   .refine((data) => Object.keys(data).length > 0, {
     message: 'Debe enviar al menos un campo para actualizar'
   });
+
+module.exports = {zonaSchema, zonaUpdateSchema}
