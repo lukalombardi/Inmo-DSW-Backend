@@ -4,18 +4,22 @@ const { prisma } = require('./db.js')
 const zonaRoutes = require('./zona/zona.routes.js')
 const tipoRoutes = require('./tipo/tipo.routes.js')
 const propiedadRoutes = require('./propiedad/propiedad.routes.js')
+const consultaRoutes = require('./consulta/consulta.routes.js')
+const usuarioRoutes = require('./usuario/usuario.routes.js')
 
 const app = express()
 
-app.use(express.json())            
+app.use(express.json())
 
 app.get('/', (req, res) => {
   res.json({ message: 'Inmobiliaria API up' })
 })
 
-app.use('/zonas', zonaRoutes)      
+app.use('/zonas', zonaRoutes)
 app.use('/tipos', tipoRoutes)
 app.use('/propiedades', propiedadRoutes)
+app.use('/consultas', consultaRoutes)
+app.use('/usuarios', usuarioRoutes)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
