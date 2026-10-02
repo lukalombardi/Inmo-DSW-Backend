@@ -2,7 +2,7 @@ const { prisma } = require('../db.js');
 
 const getPropiedades = async (req, res) => {
     try {
-    const propiedades = await prisma.propiedad.indMany({
+    const propiedades = await prisma.propiedad.findMany({
         orderBy: { id: 'asc' }
     });
     res.json(propiedades);
@@ -30,7 +30,7 @@ const getPropiedad = async (req, res) => {
 const createPropiedad = async (req, res) => {
     try {
         const propiedad = await prisma.propiedad.create({
-        data: { cantHabitaciones: req.body.cantHabitaciones, metrosCuadrados: req.body.metrosCuadrados, cochera: req.body.cochera, aptoCredito: req.body.aptoCredito, descripcion: req.body.descripcion, operacion: req.body.operacion, direccion: req.body.direccion, latitud: req.body.latitud, longitud: req.body.longitud, moneda: req.body.moneda, precio: req.body.precio  }
+        data: { cantHabitaciones: req.body.cantHabitaciones, metrosCuadrados: req.body.metrosCuadrados, cochera: req.body.cochera, aptoCredito: req.body.aptoCredito, descripcion: req.body.descripcion, operacion: req.body.operacion, direccion: req.body.direccion, latitud: req.body.latitud, longitud: req.body.longitud, moneda: req.body.moneda, precio: req.body.precio, tipoId:req.body.tipoId, zonaId: req.body.zonaId, usuarioId: req.body.usuarioId  }
     });
     res.status(201).json(propiedad);
     } catch (error) {
@@ -43,7 +43,7 @@ const updatePropiedad = async (req, res) => {
     try {
         const propiedadActualizada = await prisma.propiedad.update({
         where: { id: req.params.id },
-        data: { cantHabitaciones: req.body.cantHabitaciones, metrosCuadrados: req.body.metrosCuadrados, cochera: req.body.cochera, aptoCredito: req.body.aptoCredito, descripcion: req.body.descripcion, operacion: req.body.operacion, direccion: req.body.direccion, latitud: req.body.latitud, longitud: req.body.longitud, moneda: req.body.moneda, precio: req.body.precio }
+        data: { cantHabitaciones: req.body.cantHabitaciones, metrosCuadrados: req.body.metrosCuadrados, cochera: req.body.cochera, aptoCredito: req.body.aptoCredito, descripcion: req.body.descripcion, operacion: req.body.operacion, direccion: req.body.direccion, latitud: req.body.latitud, longitud: req.body.longitud, moneda: req.body.moneda, precio: req.body.precio,tipoId:req.body.tipoId, zonaId: req.body.zonaId, usuarioId: req.body.usuarioId  }
     });
     res.json(propiedadActualizada);
     } catch (error) {
