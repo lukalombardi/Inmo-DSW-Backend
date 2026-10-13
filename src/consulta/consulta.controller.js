@@ -1,20 +1,18 @@
-const { prisma } = require('../db.js');
+const consultaService = require('./consulta.service.js');
 
 const getConsultas = async (req,res)=>{
     try {
-        const consultas = await prisma.consulta.findMany();
+        const consultas = await consultaService.findAll();
         res.json(consultas);
     }catch(error){
         console.error('getConsultas:', error);
-        res.status(500).json({ error: 'Error al obtener las Consultas' });  
+        res.status(500).json({ error: 'Error al obtener las Consultas' });
     }
 };
 
 const getConsulta = async(req,res) =>{
   try {
-    const consulta = await prisma.consulta.findUnique({
-      where: { id: req.params.id }
-    });
+    const consulta = await consultaService.findOne(req.params.id);
     if (!consulta) {
       return res.status(404).json({ error: 'Consulta no encontrada' });
     }
@@ -28,13 +26,11 @@ const getConsulta = async(req,res) =>{
 
 const updateConsulta = async (req, res) => {
   try {
-    const consultaActualizada = await prisma.consulta.update({
-      where: { id: req.params.id },
-      data: {
+    const consultaActualizada = await consultaService.update(req.params.id, {
         nombre: req.body.nombre,
         email: req.body.email,
         mensaje: req.body.mensaje,
-        propiedadId: req.body.propiedadId }
+        propiedadId: req.body.propiedadId
     });
     res.json(consultaActualizada);
   } catch (error) {
@@ -51,13 +47,11 @@ const updateConsulta = async (req, res) => {
 
 const createConsulta = async (req, res) => {
   try {
-    const consulta = await prisma.consulta.create({
-      data: {
+    const consulta = await consultaService.create({
         nombre: req.body.nombre,
         email: req.body.email,
         mensaje: req.body.mensaje,
         propiedadId: req.body.propiedadId
-      }
     });
     res.status(201).json(consulta);
   } catch (error) {
@@ -71,9 +65,7 @@ const createConsulta = async (req, res) => {
 
 const deleteConsulta = async (req, res) => {
   try {
-    const consultaEliminada = await prisma.consulta.delete({
-      where: { id: req.params.id }
-    });
+    const consultaEliminada = await consultaService.remove(req.params.id);
     res.json(consultaEliminada);
   } catch (error) {
     if (error.code === 'P2025') {
