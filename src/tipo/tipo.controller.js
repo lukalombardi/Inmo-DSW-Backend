@@ -1,10 +1,8 @@
-const { prisma } = require('../db.js');
+const tipoService = require('./tipo.service.js');
 
 const getTipos = async (req, res) => {
   try {
-    const tipos = await prisma.tipo.findMany({
-      orderBy: { id: 'asc' }
-    });
+    const tipos = await tipoService.findAll();
     res.json(tipos);
   } catch (error) {
     console.error('getTipos:', error);
@@ -14,9 +12,7 @@ const getTipos = async (req, res) => {
 
 const getTipo = async (req, res) => {
   try {
-    const tipo = await prisma.tipo.findUnique({
-      where: { id: req.params.id }
-    });
+    const tipo = await tipoService.findOne(req.params.id);
     if (!tipo) {
       return res.status(404).json({ error: 'Tipo no encontrado' });
     }
@@ -29,9 +25,7 @@ const getTipo = async (req, res) => {
 
 const createTipo = async (req, res) => {
   try {
-    const tipo = await prisma.tipo.create({
-      data: { descTipo: req.body.descTipo }
-    });
+    const tipo = await tipoService.create({ descTipo: req.body.descTipo });
     res.status(201).json(tipo);
   } catch (error) {
     console.error('createTipo:', error);
@@ -41,9 +35,8 @@ const createTipo = async (req, res) => {
 
 const updateTipo = async (req, res) => {
   try {
-    const tipoActualizado = await prisma.tipo.update({
-      where: { id: req.params.id },
-      data: { descTipo: req.body.descTipo }
+    const tipoActualizado = await tipoService.update(req.params.id, {
+      descTipo: req.body.descTipo
     });
     res.json(tipoActualizado);
   } catch (error) {
@@ -57,9 +50,7 @@ const updateTipo = async (req, res) => {
 
 const deleteTipo = async (req, res) => {
   try {
-    const tipoEliminado = await prisma.tipo.delete({
-      where: { id: req.params.id }
-    });
+    const tipoEliminado = await tipoService.remove(req.params.id);
     res.json(tipoEliminado);
   } catch (error) {
     if (error.code === 'P2025') {

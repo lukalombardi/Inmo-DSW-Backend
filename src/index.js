@@ -1,5 +1,5 @@
 const express = require('express')
-const { prisma } = require('./db.js')
+const { prisma } = require('./shared/db.js')
 
 const zonaRoutes = require('./zona/zona.routes.js')
 const tipoRoutes = require('./tipo/tipo.routes.js')

@@ -1,8 +1,8 @@
-const { prisma } = require('../db.js');
+const zonaService = require('./zona.service.js');
 
 const getZonas = async (req, res) => {
   try {
-    const zonas = await prisma.zona.findMany();
+    const zonas = await zonaService.findAll();
     res.json(zonas);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener las zonas' });
@@ -11,9 +11,7 @@ const getZonas = async (req, res) => {
 
 const getZona = async (req, res) => {
   try {
-    const zona = await prisma.zona.findUnique({
-      where: { id: req.params.id }
-    });
+    const zona = await zonaService.findOne(req.params.id);
     if (!zona) {
       return res.status(404).json({ error: 'Zona no encontrada' });
     }
@@ -25,9 +23,7 @@ const getZona = async (req, res) => {
 
 const createZona = async (req, res) => {
   try {
-    const zona = await prisma.zona.create({
-      data: { nombreZona: req.body.nombreZona }
-    });
+    const zona = await zonaService.create({ nombreZona: req.body.nombreZona });
     res.status(201).json(zona);
   } catch (error) {
     res.status(500).json({ error: 'Error al crear la zona' });
@@ -36,9 +32,8 @@ const createZona = async (req, res) => {
 
 const updateZona = async (req, res) => {
   try {
-    const zonaActualizada = await prisma.zona.update({
-      where: { id: req.params.id },
-      data: { nombreZona: req.body.nombreZona }
+    const zonaActualizada = await zonaService.update(req.params.id, {
+      nombreZona: req.body.nombreZona
     });
     res.json(zonaActualizada);
   } catch (error) {
@@ -51,9 +46,7 @@ const updateZona = async (req, res) => {
 
 const deleteZona = async (req, res) => {
   try {
-    const zonaEliminada = await prisma.zona.delete({
-      where: { id: req.params.id }
-    });
+    const zonaEliminada = await zonaService.remove(req.params.id);
     res.json(zonaEliminada);
   } catch (error) {
     if (error.code === 'P2025') {

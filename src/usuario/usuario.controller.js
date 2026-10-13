@@ -1,23 +1,18 @@
-const { prisma } = require('../db.js');
+const usuarioService = require('./usuario.service.js');
 
 const getUsuarios = async (req,res)=>{
     try {
-        const usuarios = await prisma.usuario.findMany({
-            select: { id: true, nombre: true, email: true, rol: true }
-                });
+        const usuarios = await usuarioService.findAll();
         res.json(usuarios);
     }catch(error){
         console.error('getusuarios:', error);
-        res.status(500).json({ error: 'Error al obtener los Usuarios' });  
+        res.status(500).json({ error: 'Error al obtener los Usuarios' });
     }
 };
 
 const getUsuario = async (req, res) => {
     try {
-        const usuario = await prisma.usuario.findUnique({
-        where: { id: req.params.id }, 
-        select: { id: true, nombre: true, email: true, rol: true }
-    });
+        const usuario = await usuarioService.findOne(req.params.id);
     if (!usuario) {
         return res.status(404).json({ error: 'Usuario no encontrado' });
     }
@@ -30,10 +25,12 @@ const getUsuario = async (req, res) => {
 
 const createUsuario = async (req, res) => {
     try {
-        const usuario = await prisma.usuario.create({
-        data: { nombre: req.body.nombre, email: req.body.email, password: req.body.password, rol: req.body.rol },
-        select: { id: true, nombre: true, email: true, rol: true }
-    });
+        const usuario = await usuarioService.create({
+            nombre: req.body.nombre,
+            email: req.body.email,
+            password: req.body.password,
+            rol: req.body.rol
+        });
     res.status(201).json(usuario);
     } catch (error) {
     if (error.code === 'P2002') {
@@ -46,11 +43,12 @@ const createUsuario = async (req, res) => {
 
 const updateUsuario = async (req, res) => {
     try {
-        const usuarioActualizado = await prisma.usuario.update({
-        where: { id: req.params.id },
-        data: {  nombre: req.body.nombre, email: req.body.email, password: req.body.password, rol: req.body.rol  },
-        select: { id: true, nombre: true, email: true, rol: true }
-    });
+        const usuarioActualizado = await usuarioService.update(req.params.id, {
+            nombre: req.body.nombre,
+            email: req.body.email,
+            password: req.body.password,
+            rol: req.body.rol
+        });
     res.json(usuarioActualizado);
     } catch (error) {
     if (error.code === 'P2025') {
@@ -67,10 +65,7 @@ const updateUsuario = async (req, res) => {
 
 const deleteUsuario = async (req, res) => {
     try {
-        const UsuarioEliminado = await prisma.usuario.delete({
-        where: { id: req.params.id },
-        select: { id: true, nombre: true, email: true, rol: true }
-    });
+        const UsuarioEliminado = await usuarioService.remove(req.params.id);
     res.json(UsuarioEliminado);
         } catch (error) {
     if (error.code === 'P2025') {
@@ -88,4 +83,3 @@ const deleteUsuario = async (req, res) => {
 
 
 module.exports = {getUsuarios, getUsuario, createUsuario, updateUsuario, deleteUsuario}
-
