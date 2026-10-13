@@ -2,13 +2,15 @@ const { prisma } = require('../shared/db.js');
 
 const findAll = async () => {
   return prisma.propiedad.findMany({
-    orderBy: { id: 'asc' }
+    orderBy: { id: 'asc' },
+    include: { tipo: true, zona: true, fotos: true }
   });
 };
 
 const findOne = async (id) => {
   return prisma.propiedad.findUnique({
-    where: { id }
+    where: { id },
+    include: { tipo: true, zona: true, fotos: true }
   });
 };
 
