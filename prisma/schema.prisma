@@ -58,8 +58,8 @@ model Propiedad {
   descripcion      String    @db.Text
   operacion        Operacion
   direccion        String
-  latitud          Decimal   @db.Decimal(10, 7)
-  longitud         Decimal   @db.Decimal(10, 7)
+  latitud          Decimal?  @db.Decimal(10, 7)
+  longitud         Decimal?  @db.Decimal(10, 7)
   moneda           Moneda
   precio           Decimal   @db.Decimal(12, 2)
 

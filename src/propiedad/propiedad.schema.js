@@ -1,6 +1,6 @@
 const { z } = require('zod');
 
-const propiedadSchema = z.object({
+const propiedadBase = z.object({
 
 cantHabitaciones: z
     .coerce.number( {message: 'la cantidad de habitaciones debe ser un numero'})
@@ -36,11 +36,13 @@ latitud: z
     .coerce.number()
     .min(-90, 'La latitud debe ser mayor o igual a -90')
     .max(90, 'La latitud debe ser menor o igual a 90')
+    .optional()
 ,
 longitud: z
     .coerce.number()
     .min(-180, 'La longitud debe ser mayor o igual a -180')
     .max(180, 'La longitud debe ser menor o igual a 180')
+    .optional()
 ,
 moneda: z
     .enum(['ARS','USD'])
@@ -66,7 +68,19 @@ usuarioId: z
 });
 
 
-const propiedadUpdateSchema = propiedadSchema
+// latitud y longitud son opcionales (el punto en el mapa), pero si se manda una
+// se deben mandar las dos: una coordenada sola no ubica nada.
+const coordenadasEnPar = (data) =>
+    (data.latitud === undefined) === (data.longitud === undefined);
+
+const mensajePar = {
+    message: 'Latitud y longitud deben enviarse juntas',
+    path: ['latitud']
+};
+
+const propiedadSchema = propiedadBase.refine(coordenadasEnPar, mensajePar);
+
+const propiedadUpdateSchema = propiedadBase
     .partial()
     .refine((data) => Object.keys(data).length > 0, {
     message: 'Debe enviar al menos un campo para actualizar'
