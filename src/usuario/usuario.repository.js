@@ -15,6 +15,12 @@ const findOne = async (id) => {
   });
 };
 
+const findByEmail = async(email) => {
+  return prisma.usuario.findUnique({
+    where: {email},
+  })
+}
+
 const create = async (data) => {
   return prisma.usuario.create({
     data: {
@@ -47,4 +53,4 @@ const remove = async (id) => {
   });
 };
 
-module.exports = { findAll, findOne, create, update, remove };
+module.exports = { findAll, findOne, create, update, remove, findByEmail };

@@ -10,13 +10,15 @@ const {
     deleteUsuario,
     updateUsuario
 } = require('./usuario.controller.js');
+const { verificarToken } = require('../middlewares/verificarToken.middleware.js');
+const { soloAdmin } = require('../middlewares/soloAdmin.middleware.js');
 
 const router = Router();
 
 router.get('/', getUsuarios);
-router.get('/:id', validarId(),getUsuario);
+router.get('/:id', validarId(),getUsuario)
 router.post('/', verificarApiKey, validarUsuario(usuarioSchema),createUsuario);
-router.patch('/:id',verificarApiKey, validarId(),validarUsuario(usuarioUpdateSchema),updateUsuario);
-router.delete('/:id',verificarApiKey, validarId(), deleteUsuario);
+router.patch('/:id',verificarToken, soloAdmin, validarId(),validarUsuario(usuarioUpdateSchema),updateUsuario);
+router.delete('/:id',verificarToken, soloAdmin, validarId(), deleteUsuario);
 
 module.exports = router;

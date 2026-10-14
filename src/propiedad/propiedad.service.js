@@ -1,7 +1,7 @@
 const propiedadRepository = require('./propiedad.repository.js');
 
-const findAll = async () => {
-  return propiedadRepository.findAll();
+const findAll = async (filtros) => {
+  return propiedadRepository.findAll(filtros);
 };
 
 const findOne = async (id) => {

@@ -2,7 +2,9 @@ const express = require('express')
 const path = require('path')
 const multer = require('multer')
 const { prisma } = require('./shared/db.js')
+const cors = require('cors')
 
+const authRoutes = require('./auth/auth.routes.js')
 const zonaRoutes = require('./zona/zona.routes.js')
 const tipoRoutes = require('./tipo/tipo.routes.js')
 const propiedadRoutes = require('./propiedad/propiedad.routes.js')
@@ -12,6 +14,7 @@ const fotoRoutes = require('./foto/foto.routes.js')
 
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')))
 
@@ -19,6 +22,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Inmobiliaria API up' })
 })
 
+app.use('/auth', authRoutes)
 app.use('/zonas', zonaRoutes)
 app.use('/tipos', tipoRoutes)
 app.use('/propiedades', propiedadRoutes)

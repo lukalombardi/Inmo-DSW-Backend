@@ -12,17 +12,18 @@ const {
 } = require('./propiedad.controller.js');
 
 const router = Router();
+const { verificarToken } = require('../middlewares/verificarToken.middleware.js');
 
 router.get('/', getPropiedades);
 router.get('/:id', validarId(), getPropiedad);
-router.post('/', verificarApiKey, validarPropiedad(propiedadSchema), createPropiedad);
+router.post('/', verificarToken, validarPropiedad(propiedadSchema), createPropiedad);
 router.patch(
     '/:id',
-    verificarApiKey,
+    verificarToken,
     validarId(),
     validarPropiedad(propiedadUpdateSchema),
     updatePropiedad
 );
-router.delete('/:id', verificarApiKey, validarId(), deletePropiedad);
+router.delete('/:id',verificarToken , validarId(), deletePropiedad);
 
 module.exports = router;
