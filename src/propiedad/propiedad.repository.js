@@ -1,7 +1,12 @@
 const { prisma } = require('../shared/db.js');
 
-const findAll = async () => {
+const findAll = async (filtros = {}) => {
+  const where = {};
+  if (filtros.zonaId) where.zonaId = Number(filtros.zonaId);
+  if (filtros.tipoId) where.tipoId = Number(filtros.tipoId);
+  if (filtros.operacion) where.operacion = filtros.operacion;
   return prisma.propiedad.findMany({
+    where,
     orderBy: { id: 'asc' },
     include: { tipo: true, zona: true, fotos: true }
   });

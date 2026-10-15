@@ -2,7 +2,7 @@ const propiedadService = require('./propiedad.service.js');
 
 const getPropiedades = async (req, res) => {
     try {
-    const propiedades = await propiedadService.findAll();
+    const propiedades = await propiedadService.findAll(req.query);
     res.json(propiedades);
     } catch (error) {
         console.error('getPropiedades:', error);
