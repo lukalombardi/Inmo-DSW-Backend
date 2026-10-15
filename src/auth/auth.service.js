@@ -21,14 +21,12 @@ const login = async(email,  password) => {
                     email: usuario.email, 
                     rol: usuario.rol }
             }
-        }
-        else{
+        }else{
             return null
         }
-    } 
-    else{
-            return null
-        }
+    }else{
+        return null
+    }
 }
 
 module.exports = {login}

@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const { validarPropiedad } = require('../middlewares/validarPropiedad.middleware.js');
-const { verificarApiKey } = require('../middlewares/apiKey.middleware.js');
 const { validarId } = require('../middlewares/validarId.middleware.js');
 const { propiedadSchema, propiedadUpdateSchema } = require('./propiedad.schema.js');
 const {

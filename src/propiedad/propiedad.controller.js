@@ -43,6 +43,9 @@ const createPropiedad = async (req, res) => {
         });
     res.status(201).json(propiedad);
     } catch (error) {
+        if (error.code === 'P2003') {
+            return res.status(400).json({ error: 'La zona, el tipo o el usuario indicado no existe' });
+        }
         console.error('createPropiedad:', error);
         res.status(500).json({ error: 'Error al crear la propiedad' });
     }
@@ -70,6 +73,9 @@ const updatePropiedad = async (req, res) => {
     } catch (error) {
     if (error.code === 'P2025') {
         return res.status(404).json({ error: 'Propiedad no encontrada' });
+    }
+    if (error.code === 'P2003') {
+        return res.status(400).json({ error: 'La zona, el tipo o el usuario indicado no existe' });
     }
     console.error('updatePropiedad:', error);
     res.status(500).json({ error: 'Error al actualizar la propiedad' });

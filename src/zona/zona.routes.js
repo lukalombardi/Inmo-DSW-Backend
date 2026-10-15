@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const { validarTipo } = require('../middlewares/validarTipo.middleware.js');
 const { validarId } = require('../middlewares/validarId.middleware.js');
-const { verificarApiKey } = require('../middlewares/apiKey.middleware.js');
 const { zonaSchema, zonaUpdateSchema } = require('./zona.schema.js');
 const { verificarToken } = require('../middlewares/verificarToken.middleware.js');
 const { soloAdmin } = require('../middlewares/soloAdmin.middleware.js');
