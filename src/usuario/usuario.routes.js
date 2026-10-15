@@ -15,8 +15,8 @@ const { soloAdmin } = require('../middlewares/soloAdmin.middleware.js');
 
 const router = Router();
 
-router.get('/', getUsuarios);
-router.get('/:id', validarId(),getUsuario)
+router.get('/', verificarToken, soloAdmin, getUsuarios);
+router.get('/:id', verificarToken, soloAdmin, validarId(),getUsuario)
 router.post('/', verificarApiKey, validarUsuario(usuarioSchema),createUsuario);
 router.patch('/:id',verificarToken, soloAdmin, validarId(),validarUsuario(usuarioUpdateSchema),updateUsuario);
 router.delete('/:id',verificarToken, soloAdmin, validarId(), deleteUsuario);

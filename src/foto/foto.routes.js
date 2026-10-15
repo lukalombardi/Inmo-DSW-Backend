@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const { upload } = require('../shared/upload.js');
-const { verificarApiKey } = require('../middlewares/apiKey.middleware.js');
 const { validarId } = require('../middlewares/validarId.middleware.js');
 const { validarTipo } = require('../middlewares/validarTipo.middleware.js');
 const { fotoSchema } = require('./foto.schema.js');

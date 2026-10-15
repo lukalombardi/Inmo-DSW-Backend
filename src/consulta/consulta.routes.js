@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { validarTipo } = require('../middlewares/validarTipo.middleware.js');
-const { verificarApiKey } = require('../middlewares/apiKey.middleware.js');
 const { validarId } = require('../middlewares/validarId.middleware.js');
+const { verificarToken } = require('../middlewares/verificarToken.middleware.js');
 const {consultaSchema, consultaUpdateSchema} = require('../consulta/consulta.schema.js');
 const {
     getConsulta,
@@ -13,16 +13,15 @@ const {
 
 const router = Router();
 
-router.get('/', getConsultas);
-router.get('/:id', validarId(), getConsulta);
-router.post('/', verificarApiKey, validarTipo(consultaSchema), createConsulta);
+router.get('/', verificarToken, getConsultas);
+router.get('/:id', verificarToken, validarId(), getConsulta);
+router.post('/', validarTipo(consultaSchema), createConsulta);
 router.patch(
   '/:id',
-  //verificarApiKey,
+  verificarToken,
   validarId(),
   validarTipo(consultaUpdateSchema),
   updateConsulta
 );
-// router.delete('/:id', verificarApiKey, validarId(), deleteTipo);
-router.delete('/:id', validarId(), deleteConsulta);
+router.delete('/:id', verificarToken, validarId(), deleteConsulta);
 module.exports = router;
