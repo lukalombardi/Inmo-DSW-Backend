@@ -8,7 +8,7 @@ const { verificarToken } = require('../middlewares/verificarToken.middleware.js'
 
 const router = Router();
 
-router.get('/', getFotos);                 // GET /fotos  o  /fotos?propiedadId=1
+router.get('/', getFotos);                 
 router.get('/:id', validarId(), getFoto);
 router.post('/', verificarToken, upload.single('imagen'), validarTipo(fotoSchema), createFoto);
 router.delete('/:id', verificarToken, validarId(), deleteFoto);

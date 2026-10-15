@@ -8,8 +8,8 @@ const findOne = (id) => fotoRepository.findOne(id);
 const create = (data) => fotoRepository.create(data);
 
 const remove = async (id) => {
-  const foto = await fotoRepository.remove(id);   // tira P2025 si no existe
-  // borrar el archivo del disco (best-effort: si ya no esta, no rompemos)
+  const foto = await fotoRepository.remove(id);   
+  
   try {
     await fs.unlink(path.join(UPLOAD_DIR, path.basename(foto.url)));
   } catch (error) {

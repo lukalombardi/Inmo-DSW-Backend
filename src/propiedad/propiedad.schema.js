@@ -68,8 +68,7 @@ usuarioId: z
 });
 
 
-// latitud y longitud son opcionales (el punto en el mapa), pero si se manda una
-// se deben mandar las dos: una coordenada sola no ubica nada.
+
 const coordenadasEnPar = (data) =>
     (data.latitud === undefined) === (data.longitud === undefined);
 

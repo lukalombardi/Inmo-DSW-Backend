@@ -3,10 +3,10 @@ const path = require('path');
 const crypto = require('crypto');
 const fs = require('fs');
 
-// uploads/ en la raiz del proyecto (dos niveles arriba de src/shared/)
+
 const UPLOAD_DIR = path.join(__dirname, '..', '..', 'uploads');
 
-// nos aseguramos de que la carpeta exista (ej: clones nuevos del repo)
+
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
 const storage = multer.diskStorage({
