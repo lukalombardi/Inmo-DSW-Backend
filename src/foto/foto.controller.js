@@ -3,7 +3,7 @@ const path = require('path');
 const fotoService = require('./foto.service.js');
 const { UPLOAD_DIR } = require('../shared/upload.js');
 
-// si algo falla despues de subir el archivo, lo borramos para no dejar huerfanos
+
 const limpiarArchivo = async (file) => {
   if (!file) return;
   try { await fs.unlink(path.join(UPLOAD_DIR, file.filename)); } catch (_) {}
