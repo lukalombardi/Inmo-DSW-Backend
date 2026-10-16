@@ -30,10 +30,10 @@ Requisito: Docker Desktop.
 1. Crear un admin (usa la `API_KEY`):
 
    ```http
-   POST /usuarios
+   POST /users
    x-api-key: clave-de-prueba
 
-   { "nombre": "Admin", "email": "admin@inmo.com", "password": "admin123", "rol": "ADMIN" }
+   { "name": "Admin", "email": "admin@inmo.com", "password": "admin123", "role": "ADMIN" }
    ```
 
 2. Loguearse y copiar el `token`:
@@ -51,14 +51,14 @@ Requisito: Docker Desktop.
 | Ruta | Lectura (GET) | Escritura (POST / PATCH / DELETE) |
 |---|---|---|
 | `/auth/login` | — | POST público |
-| `/usuarios` | ADMIN | POST con API key; PATCH y DELETE ADMIN |
-| `/zonas` | Público | ADMIN |
-| `/tipos` | Público | ADMIN |
-| `/propiedades` | Público | Logueado |
-| `/fotos` | Público | Logueado |
-| `/consultas` | Logueado | POST público; PATCH y DELETE logueado |
+| `/users` | ADMIN | POST con API key; PATCH y DELETE ADMIN |
+| `/zones` | Público | ADMIN |
+| `/property-types` | Público | ADMIN |
+| `/properties` | Público | Logueado |
+| `/photos` | Público | Logueado |
+| `/inquiries` | Logueado | POST público; PATCH y DELETE logueado |
 
-- Filtros del listado: `GET /propiedades?zonaId=1&tipoId=1&operacion=VENTA` (`VENTA` o `ALQUILER`).
-- `GET /propiedades/:id` trae el detalle con tipo, zona, fotos y coordenadas.
-- Subir una foto: `POST /fotos` con form-data, campos `imagen` (archivo) y `propiedadId`. Se ve en `http://localhost:3000/uploads/<archivo>`.
+- Filtros del listado: `GET /properties?zoneId=1&propertyTypeId=1&operation=SALE` (`SALE` o `RENT`).
+- `GET /properties/:id` trae el detalle con tipo (`propertyType`), zona (`zone`), fotos (`photos`) y coordenadas (`latitude`, `longitude`).
+- Subir una foto: `POST /photos` con form-data, campos `image` (archivo) y `propertyId`. Se ve en `http://localhost:3000/uploads/<archivo>`.
 
