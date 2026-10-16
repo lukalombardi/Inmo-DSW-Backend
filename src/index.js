@@ -5,12 +5,12 @@ const { prisma } = require('./shared/db.js')
 const cors = require('cors')
 
 const authRoutes = require('./auth/auth.routes.js')
-const zonaRoutes = require('./zona/zona.routes.js')
-const tipoRoutes = require('./tipo/tipo.routes.js')
-const propiedadRoutes = require('./propiedad/propiedad.routes.js')
-const consultaRoutes = require('./consulta/consulta.routes.js')
-const usuarioRoutes = require('./usuario/usuario.routes.js')
-const fotoRoutes = require('./foto/foto.routes.js')
+const zoneRoutes = require('./zone/zone.routes.js')
+const propertyTypeRoutes = require('./property-type/property-type.routes.js')
+const propertyRoutes = require('./property/property.routes.js')
+const inquiryRoutes = require('./inquiry/inquiry.routes.js')
+const userRoutes = require('./user/user.routes.js')
+const photoRoutes = require('./photo/photo.routes.js')
 
 const app = express()
 
@@ -23,12 +23,12 @@ app.get('/', (req, res) => {
 })
 
 app.use('/auth', authRoutes)
-app.use('/zonas', zonaRoutes)
-app.use('/tipos', tipoRoutes)
-app.use('/propiedades', propiedadRoutes)
-app.use('/consultas', consultaRoutes)
-app.use('/usuarios', usuarioRoutes)
-app.use('/fotos', fotoRoutes)
+app.use('/zones', zoneRoutes)
+app.use('/property-types', propertyTypeRoutes)
+app.use('/properties', propertyRoutes)
+app.use('/inquiries', inquiryRoutes)
+app.use('/users', userRoutes)
+app.use('/photos', photoRoutes)
 
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

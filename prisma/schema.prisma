@@ -7,93 +7,92 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Operacion {
-  VENTA
-  ALQUILER
+enum Operation {
+  SALE
+  RENT
 }
 
-enum Moneda {
+enum Currency {
   ARS
   USD
 }
 
-enum Rol {
+enum Role {
   ADMIN
-  OPERADOR
+  OPERATOR
 }
 
-model Zona {
-  id          Int         @id @default(autoincrement())
-  nombreZona  String
-  propiedades Propiedad[]
+model Zone {
+  id         Int        @id @default(autoincrement())
+  name       String
+  properties Property[]
 
-  @@map("zonas")
+  @@map("zones")
 }
 
-model Tipo {
-  id          Int         @id @default(autoincrement())
-  descTipo    String
-  propiedades Propiedad[]
+model PropertyType {
+  id          Int        @id @default(autoincrement())
+  description String
+  properties  Property[]
 
-  @@map("tipos")
+  @@map("property_types")
 }
 
-model Usuario {
-  id          Int         @id @default(autoincrement())
-  nombre      String
-  email       String      @unique
-  password    String
-  rol         Rol         @default(OPERADOR)
-  propiedades Propiedad[]
+model User {
+  id         Int        @id @default(autoincrement())
+  name       String
+  email      String     @unique
+  password   String
+  role       Role       @default(OPERATOR)
+  properties Property[]
 
-  @@map("usuarios")
+  @@map("users")
 }
 
-model Propiedad {
-  id               Int       @id @default(autoincrement())
-  cantHabitaciones Int
-  metrosCuadrados  Decimal   @db.Decimal(10, 2)
-  cochera          Boolean
-  aptoCredito      Boolean
-  descripcion      String    @db.Text
-  operacion        Operacion
-  direccion        String
-  latitud          Decimal?  @db.Decimal(10, 7)
-  longitud         Decimal?  @db.Decimal(10, 7)
-  moneda           Moneda
-  precio           Decimal   @db.Decimal(12, 2)
+model Property {
+  id             Int       @id @default(autoincrement())
+  rooms          Int
+  squareMeters   Decimal   @db.Decimal(10, 2)
+  garage         Boolean
+  creditEligible Boolean
+  description    String    @db.Text
+  operation      Operation
+  address        String
+  latitude       Decimal?  @db.Decimal(10, 7)
+  longitude      Decimal?  @db.Decimal(10, 7)
+  currency       Currency
+  price          Decimal   @db.Decimal(12, 2)
 
-  tipoId    Int
-  tipo      Tipo    @relation(fields: [tipoId], references: [id])
-  zonaId    Int
-  zona      Zona    @relation(fields: [zonaId], references: [id])
-  usuarioId Int
-  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  propertyTypeId Int
+  propertyType   PropertyType @relation(fields: [propertyTypeId], references: [id])
+  zoneId         Int
+  zone           Zone         @relation(fields: [zoneId], references: [id])
+  userId         Int
+  user           User         @relation(fields: [userId], references: [id])
 
-  fotos     Foto[]
-  consultas Consulta[]
+  photos    Photo[]
+  inquiries Inquiry[]
 
-
-  @@map("propiedades")
+  @@map("properties")
 }
 
-model Foto {
-  id          Int       @id @default(autoincrement())
-  url         String
-  propiedadId Int
-  propiedad   Propiedad @relation(fields: [propiedadId], references: [id], onDelete: Cascade)
+model Photo {
+  id         Int      @id @default(autoincrement())
+  url        String
+  propertyId Int
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
-  @@map("fotos")
+  @@map("photos")
 }
 
-model Consulta {
-  id          Int       @id @default(autoincrement())
-  nombre      String
-  email       String
-  mensaje     String    @db.Text
-  fecha       DateTime  @default(now())
-  propiedadId Int
-  propiedad   Propiedad @relation(fields: [propiedadId], references: [id], onDelete: Cascade)
+model Inquiry {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String
+  message    String   @db.Text
+  createdAt  DateTime @default(now())
+  propertyId Int
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
-  @@map("consultas")
+  @@map("inquiries")
 }
