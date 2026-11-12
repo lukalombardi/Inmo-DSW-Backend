@@ -20,6 +20,7 @@ enum Currency {
 enum Role {
   ADMIN
   OPERATOR
+  VISITOR
 }
 
 model Zone {
@@ -28,6 +29,18 @@ model Zone {
   properties Property[]
 
   @@map("zones")
+}
+
+model Like{
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  propertyId Int
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([propertyId, userId])
+  @@map("likes")
 }
 
 model PropertyType {
@@ -45,6 +58,7 @@ model User {
   password   String
   role       Role       @default(OPERATOR)
   properties Property[]
+  likes    Like[]
 
   @@map("users")
 }
@@ -72,6 +86,7 @@ model Property {
 
   photos    Photo[]
   inquiries Inquiry[]
+  likes Like[]
 
   @@map("properties")
 }

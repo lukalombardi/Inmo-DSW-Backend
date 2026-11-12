@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { validateBody } = require('../middlewares/validateBody.middleware.js');
 const { validateId } = require('../middlewares/validateId.middleware.js');
 const { verifyToken } = require('../middlewares/verifyToken.middleware.js');
+const { requireStaff } = require('../middlewares/requireStaff.middleware.js');
 const {inquirySchema, inquiryUpdateSchema} = require('./inquiry.schema.js');
 const {
     getInquiry,
@@ -13,15 +14,16 @@ const {
 
 const router = Router();
 
-router.get('/', verifyToken, getInquiries);
-router.get('/:id', verifyToken, validateId(), getInquiry);
+router.get('/', verifyToken, requireStaff, getInquiries);
+router.get('/:id', verifyToken, requireStaff, validateId(), getInquiry);
 router.post('/', validateBody(inquirySchema), createInquiry);
 router.patch(
   '/:id',
   verifyToken,
+  requireStaff,
   validateId(),
   validateBody(inquiryUpdateSchema),
   updateInquiry
 );
-router.delete('/:id', verifyToken, validateId(), deleteInquiry);
+router.delete('/:id', verifyToken, requireStaff, validateId(), deleteInquiry);
 module.exports = router;
