@@ -11,6 +11,7 @@ const propertyRoutes = require('./property/property.routes.js')
 const inquiryRoutes = require('./inquiry/inquiry.routes.js')
 const userRoutes = require('./user/user.routes.js')
 const photoRoutes = require('./photo/photo.routes.js')
+const likeRoutes = require('./like/like.routes.js')
 
 const app = express()
 
@@ -29,6 +30,7 @@ app.use('/properties', propertyRoutes)
 app.use('/inquiries', inquiryRoutes)
 app.use('/users', userRoutes)
 app.use('/photos', photoRoutes)
+app.use(likeRoutes) // POST/DELETE /properties/:id/likes y GET /likes/mine
 
 app.use((err, req, res, next) => {
   if (err instanceof multer.MulterError) {

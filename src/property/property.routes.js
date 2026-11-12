@@ -12,17 +12,19 @@ const {
 
 const router = Router();
 const { verifyToken } = require('../middlewares/verifyToken.middleware.js');
+const { requireStaff } = require('../middlewares/requireStaff.middleware.js');
 
 router.get('/', getProperties);
 router.get('/:id', validateId(), getProperty);
-router.post('/', verifyToken, validateBody(propertySchema), createProperty);
+router.post('/', verifyToken, requireStaff, validateBody(propertySchema), createProperty);
 router.patch(
     '/:id',
     verifyToken,
+    requireStaff,
     validateId(),
     validateBody(propertyUpdateSchema),
     updateProperty
 );
-router.delete('/:id',verifyToken , validateId(), deleteProperty);
+router.delete('/:id',verifyToken , requireStaff, validateId(), deleteProperty);
 
 module.exports = router;
